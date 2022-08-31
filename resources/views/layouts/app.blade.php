@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-
+        <link rel="stylesheet" href="/css/toastr.min.css">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -40,5 +40,18 @@
         @stack('modals')
 
         @livewireScripts
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/toastr.min.js"></script>
+        <script>
+            @if(session()->has('success'))
+            toastr.success("{{ session()->get('success')}}");
+            @endif
+            @if(session()->has('warning'))
+            toastr.warning("{{ session()->get('warning')}}");
+            @endif
+            @if(session()->has('error'))
+            toastr.error("{{ session()->get('error')}}");
+            @endif
+        </script>
     </body>
 </html>
