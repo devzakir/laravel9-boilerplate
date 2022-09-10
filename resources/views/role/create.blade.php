@@ -29,7 +29,18 @@
                         @enderror
                     </div>
 
-                    <div class="flex flex-wrap gap-6 mb-4">
+                    <div class="flex gap-6 bg-white mb-6 px-6 py-4">
+                        @foreach($permissions as $permission)
+                        <div class="ml-3 role-management-checkbox">
+                            <input onclick="checksinglepermission('role-management-checkbox','management')" name="permissions[]" id="permission{{$permission->id}}" value="{{ $permission->id}}" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="permission{{$permission->id}}" class="ml-2 text-lg text-gray-900 dark:text-gray-300">
+                                {{ $permission->name }}
+                            </label>
+                        </div>
+                        @endforeach
+                    </div>
+
+                    {{-- <div class="flex flex-wrap gap-6 mb-4">
                         <div class="lg:w-80 lg:mb-0 mb-2 px-6 py-4 rounded-md shadow-sm dark:bg-gray-800 bg-white">
                             <div class="border-b pb-2">
                                 <input id="management" type="checkbox" onclick="CheckPermissionByGroup('role-management-checkbox',this)" value="2" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -104,7 +115,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <button type="submit" class="mb-4 text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-4">
                         Create
                     </button>

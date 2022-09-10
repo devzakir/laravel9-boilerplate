@@ -21,7 +21,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('role.index');
+        $roles = Role::with('permissions')->latest()->get();
+        return view('role.index', compact('roles'));
     }
 
     /**
@@ -31,10 +32,10 @@ class RoleController extends Controller
      */
     public function create()
     {
-        // $permissions = Permission::all();
+        $permissions = Permission::all();
         // $permission_groups = User::getPermissionGroup();
 
-        return view('role.create');
+        return view('role.create', compact('permissions'));
     }
 
     /**
@@ -45,7 +46,12 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        // CreateRole::create($request);
+        $request->validate([
+            'name' => 'required|unique:roles,name'
+        ]);
+
+        $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
+        $role->syncPermissions($request->permissions);
 
         session()->flash('success', 'Role Created!');
         return redirect()->route('roles.index');
@@ -83,16 +89,16 @@ class RoleController extends Controller
      */
     public function update($request, $id)
     {
-        abort_if(!userCan('role.update'), 403);
+        // abort_if(!userCan('role.update'), 403);
 
         try {
             UpdateRole::update($request, $role);
 
-            Toastr::success('success', 'Role Updated!');
+            session()->flash('success', 'Role Updated!');
             return back();
         } catch (\Throwable $th) {
 
-            Toastr::error('Error', 'Something is wrong');
+            session()->flash('error', 'Something is wrong');
             return back();
         }
     }
@@ -103,19 +109,19 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        abort_if(!userCan('role.delete'), 403);
+        // abort_if(!userCan('role.delete'), 403);
 
         try {
             if (!is_null($role)) {
                 $role->delete();
             }
 
-            Toastr::success('success', 'Role Deleted!');
+            session()->flash('success', 'Role Deleted!');
             return back();
         } catch (\Throwable $th) {
-            Toastr::error('Error', 'Something is wrong');
+            session()->flash('error', 'Something is wrong');
             return back();
         }
     }

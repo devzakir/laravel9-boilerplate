@@ -28,7 +28,7 @@
                             <th scope="col" class="py-3 px-6">
                                 Name
                             </th>
-                            <th scope="col" class="py-3 px-6">
+                            <th scope="col" class="py-3 px-6" style="width: 500px">
                                 Permissions
                             </th>
                             <th scope="col" class="py-3 px-6">
@@ -37,43 +37,52 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <th scope="row" class="py-4 px-6">1</th>
-                            <th scope="row" class="py-4 px-6">
-                                Create Post
-                            </th>
-                            <th class="py-4 px-6">
-                                <button id="show-per-icon" onclick="permissionShow('show', '')" type="button"
-                                    data-tooltip-target="show-button" data-bs-toggle="tooltip" data-bs-placement="top">
-                                    <x-svg.eye class="w-6 h-6 text-pink-400" />
-                                </button>
-                                <button class="hidden" id="hide-per-icon" onclick="permissionShow('hide', '')"
-                                    type="button" data-tooltip-target="hide-button" data-bs-toggle="tooltip"
-                                    data-bs-placement="top">
-                                    <x-svg.eye-off class="w-6 h-6 text-pink-400" />
-                                </button>
-                                <div id="permission" class="hidden grid grid-cols-6 gap-1 text-center">
-                                    <div class="bg-green-500 text-white p-1 rounded font-bold">
-                                        hello
-                                    </div>
-                                </div>
-                            </th>
-                            <td class="py-4 px-6 flex gap-2">
-                                <a data-tooltip-target="edit-button" data-bs-toggle="tooltip" data-bs-placement="top"
-                                    href="">
-                                    <x-svg.edit class="w-6 h-6 text-green-400" />
-                                </a>
-                                <form action="" method="POST" class="d-inline">
-                                    <button data-tooltip-target="delete-button" data-bs-toggle="tooltip"
-                                        data-bs-placement="top">
-                                        <x-svg.trash class="w-6 h-6 text-red-400" />
+                        @if($roles->count())
+                            @foreach($roles as $role)
+                            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                <th scope="row" class="py-4 px-6">{{ $role->id }}</th>
+                                <th scope="row" class="py-4 px-6">
+                                    {{ $role->name }}
+                                </th>
+                                <th class="py-4 px-6" style="width: 500px">
+                                    <button id="showPerIcon{{$role->id}}" onclick="permissionShow('show', {{$role->id}})" type="button"
+                                        data-tooltip-target="show-button" data-bs-toggle="tooltip" data-bs-placement="top">
+                                        <x-svg.eye class="w-6 h-6 text-pink-400" />
                                     </button>
-                                </form>
-                            </td>
-                        </tr>
+                                    <button class="hidden" id="hidePerIcon{{$role->id}}" onclick="permissionShow('hide', {{$role->id}})"
+                                        type="button" data-tooltip-target="hide-button" data-bs-toggle="tooltip"
+                                        data-bs-placement="top">
+                                        <x-svg.eye-off class="w-6 h-6 text-pink-400" />
+                                    </button>
+                                    <div id="permission{{$role->id}}" class="hidden flex gap-2 flex-wrap text-center">
+                                        @foreach($role->permissions as $item)
+                                        <div class="bg-green-500 text-white px-2 py-1 rounded font-bold">
+                                            {{ $item->name }}
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                </th>
+                                <td class="py-4 px-6 flex gap-2">
+                                    <a data-tooltip-target="edit-button" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        href="{{ route('roles.edit', $role->id) }}">
+                                        <x-svg.edit class="w-6 h-6 text-green-400" />
+                                    </a>
+                                    <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button data-tooltip-target="delete-button" data-bs-toggle="tooltip"
+                                            data-bs-placement="top">
+                                            <x-svg.trash class="w-6 h-6 text-red-400" />
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        @else
                         <tr>
                             <td colspan="10" class="text-center pt-8">Nothing Found.</td>
                         </tr>
+                        @endif
                     </tbody>
                 </table>
                 <div class="p-5">
@@ -82,17 +91,17 @@
             </div>
         </div>
     </div>
-</x-app-layout>
-<script>
-    function PermissionShow(param, id) {
-        if (param === 'show') {
-            $('#permission' + id).removeClass('hidden');
-            $('#show-per-icon' + id).addClass('hidden');
-            $('#hide-per-icon' + id).removeClass('hidden');
-        } else {
-            $('#permission' + id).addClass('hidden');
-            $('#show-per-icon' + id).removeClass('hidden');
-            $('#hide-per-icon' + id).addClass('hidden');
+    <script>
+        function permissionShow(param, id) {
+            if (param === 'show') {
+                $('#permission' + id).removeClass('hidden');
+                $('#showPerIcon' + id).addClass('hidden');
+                $('#hidePerIcon' + id).removeClass('hidden');
+            } else {
+                $('#permission' + id).addClass('hidden');
+                $('#showPerIcon' + id).removeClass('hidden');
+                $('#hidePerIcon' + id).addClass('hidden');
+            }
         }
-    }
-</script>
+    </script>
+</x-app-layout>
