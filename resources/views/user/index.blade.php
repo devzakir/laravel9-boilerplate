@@ -49,12 +49,14 @@
                 <h2 class="">All User
                     <span class="bg-blue-500 text-white rounded px-1 text-xs py-0.5">{{ $users->total() }}</span>
                 </h2>
+                @can('create user')
                 <a href="{{ route('users.create') }}">
                     <button type="button"
                         class="text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
                         Create User
                     </button>
                 </a>
+                @endcan
             </div>
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -106,10 +108,13 @@
                                     </div>
                                 </td>
                                 <td class="py-4 px-6 flex gap-2">
+                                    @can('edit user')
                                     <a data-tooltip-target="edit-button" data-bs-toggle="tooltip"
                                         data-bs-placement="top" href="{{ route('users.edit', $user->id) }}">
                                         <x-svg.edit class="w-6 h-6 text-green-400" />
                                     </a>
+                                    @endcan
+                                    @can('delete user')
                                     <form action="{{ route('users.destroy', $user->id) }}" method="POST"
                                         class="d-inline">
                                         @method('DELETE')
@@ -120,6 +125,7 @@
                                             <x-svg.trash class="w-6 h-6 text-red-400" />
                                         </button>
                                     </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

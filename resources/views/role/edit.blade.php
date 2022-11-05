@@ -10,12 +10,11 @@
             <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
                 <div class="flex justify-between items-center p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                     <h2>Role Edit</h2>
-                    <a href="{{ route('roles.index') }}">
-                        <button type="button"
-                            class="text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                    @can('role list')
+                        <a href="{{ route('roles.index') }}" class="text-white bg-blue-500 hover:bg-blue-400 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
                             All Roles
-                        </button>
-                    </a>
+                        </a>
+                    @endcan
                 </div>
                 <form action="{{ route('roles.update', $role->id) }}" method="POST" class="p-4">
                     @csrf

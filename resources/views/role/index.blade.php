@@ -12,12 +12,11 @@
                     <h2 class="">All Roles
                         <span class="bg-blue-500 text-white rounded px-1 text-xs py-0.5">10</span>
                     </h2>
-                    <a href="{{ route('roles.create') }}">
-                        <button type="button"
-                            class="text-white bg-blue-500 hover:bg-blue-400 font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                    @can('create role')
+                        <a href="{{ route('roles.create') }}" class="text-white bg-blue-500 hover:bg-blue-400 font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
                             Create Role
-                        </button>
-                    </a>
+                        </a>
+                    @endcan
                 </div>
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -63,10 +62,13 @@
                                     </div>
                                 </th>
                                 <td class="py-4 px-6 flex gap-2">
+                                    @can('edit role')
                                     <a data-tooltip-target="edit-button" data-bs-toggle="tooltip" data-bs-placement="top"
                                         href="{{ route('roles.edit', $role->id) }}">
                                         <x-svg.edit class="w-6 h-6 text-green-400" />
                                     </a>
+                                    @endcan
+                                    @can('delete role')
                                     <form action="{{ route('roles.destroy', $role->id) }}" method="POST" class="d-inline">
                                         @method('DELETE')
                                         @csrf
@@ -75,6 +77,7 @@
                                             <x-svg.trash class="w-6 h-6 text-red-400" />
                                         </button>
                                     </form>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

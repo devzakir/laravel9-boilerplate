@@ -9,7 +9,9 @@
             <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
                 <div class="flex justify-between items-center p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
                     <h2>Edit User</h2>
+                    @can('user list')
                     <a href="{{ route('users.index') }}" class="mt-1 text-sm font-normal px-3 py-1 rounded bg-blue-600 text-white">All User</a>
+                    @endcan
                 </div>
                 <form class="p-5 lg:max-w-4xl mx-auto dropzone" action="{{ route('users.update', $user->id) }}" method="POST">
                     <div class="flex gap-6 flex-wrap md:flex-nowrap">

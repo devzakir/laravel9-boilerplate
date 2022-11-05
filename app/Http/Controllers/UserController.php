@@ -8,6 +8,13 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:user list'])->only(['index']);
+        $this->middleware(['permission:create user'])->only(['create']);
+        $this->middleware(['permission:edit user'])->only(['edit']);
+        $this->middleware(['permission:delete user'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -33,6 +40,8 @@ class UserController extends Controller
      */
     public function create()
     {
+        // abort_if(!auth()->user()->can('create user'), 403);
+
         $roles = Role::latest()->get();
         return view('user.create', compact('roles'));
     }
